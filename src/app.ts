@@ -20,6 +20,28 @@ app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 // --- Routes ---
 app.use(routes);
 
+// --- Root Route ---
+app.get('/', (req, res) => {
+    res.json({
+        message: 'Bitespeed Identity Reconciliation Service',
+        status: 'Running',
+        docs: '/docs',
+        health: '/health',
+    });
+});
+
+// --- 404 Handler ---
+app.use((req, res) => {
+    res.status(404).json({
+        success: false,
+        error: {
+            message: `Cannot ${req.method} ${req.path}`,
+            code: 404,
+            correlationId: (req as any).correlationId || 'unknown',
+        },
+    });
+});
+
 // --- Centralized Error Handler (must be last) ---
 app.use(errorHandler);
 
