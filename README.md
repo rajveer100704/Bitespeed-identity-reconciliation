@@ -3,7 +3,7 @@
 A backend service that identifies and reconciles customer contacts across multiple purchases. When a customer uses different email addresses or phone numbers, the service links them through primary/secondary contact relationships, ensuring a unified customer identity.
 
 **Hosted Endpoint:** `https://bitespeed-identity-zt9v.onrender.com`
-**Swagger Docs:** `https://bitespeed-identity-zt9v.onrender.com/docs/`
+**Swagger Docs:** `https://bitespeed-identity-zt9v.onrender.com/docs`
 
 ---
 
