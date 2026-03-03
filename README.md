@@ -1,8 +1,7 @@
-<img width="880" height="293" alt="image" src="https://github.com/user-attachments/assets/0450e619-8cc2-4ed4-9bd1-31773321ec8d" /># Bitespeed Identity Reconciliation Service
-
 A backend service that identifies and reconciles customer contacts across multiple purchases. When a customer uses different email addresses or phone numbers, the service links them through primary/secondary contact relationships, ensuring a unified customer identity.
 
 **Hosted Endpoint:** `https://bitespeed-identity-zt9v.onrender.com`
+**Swagger Docs:** `https://bitespeed-identity-zt9v.onrender.com/docs/`
 
 ---
 
