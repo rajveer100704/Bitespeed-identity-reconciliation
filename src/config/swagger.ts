@@ -1,34 +1,20 @@
 import swaggerJsdoc from 'swagger-jsdoc';
 import { config } from './index';
 
+const serverUrl =
+  process.env.EXTERNAL_URL || `http://localhost:${process.env.PORT || 3000}`;
+
 const options: swaggerJsdoc.Options = {
   definition: {
     openapi: '3.0.0',
     info: {
-      title: 'Bitespeed Identity Reconciliation API',
+      title: 'Bitespeed Identity Reconciliation Service',
       version: '1.0.0',
-      description: `
-Identity Reconciliation service for Bitespeed.
-
-This API identifies and reconciles customer contacts across multiple purchases.
-When a customer uses different email addresses or phone numbers, this service
-links them together through primary and secondary contact relationships.
-
-### Key Concepts
-- **Primary Contact**: The oldest contact record in a linked cluster
-- **Secondary Contact**: Any subsequent contact linked to the primary
-- **Reconciliation**: The process of merging separate contact clusters when a link is discovered
-      `.trim(),
-      contact: {
-        name: 'API Support',
-      },
+      description: 'API for contact identity reconciliation',
     },
     servers: [
       {
-        url: config.externalUrl,
-        description: config.externalUrl.includes('localhost')
-          ? 'Local development server'
-          : 'Production server',
+        url: serverUrl,
       },
     ],
     tags: [
