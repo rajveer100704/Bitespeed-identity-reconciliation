@@ -271,6 +271,20 @@ npm run dev
 # Swagger docs at http://localhost:3000/docs
 ```
 
+### Deployment (Render)
+
+This project is configured for deployment on Render via the `render.yaml` blueprint.
+
+1. Connect your GitHub repository to Render.
+2. Render will automatically detect the `render.yaml` file.
+3. It will provision a PostgreSQL database and a Web Service.
+4. The following environment variables are required (automatically linked via blueprint):
+   - `DATABASE_URL`: Automatically provided by the Render PostgreSQL database.
+   - `EXTERNAL_URL`: The URL of your Render service (e.g., `https://bitespeed-identity-reconciliation.onrender.com`).
+   - `NODE_ENV`: Set to `production`.
+
+Every push to the `main` branch will trigger an automatic deployment.
+
 ### Available Scripts
 
 | Script | Command |

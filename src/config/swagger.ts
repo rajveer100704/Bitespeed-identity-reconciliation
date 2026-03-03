@@ -1,4 +1,5 @@
 import swaggerJsdoc from 'swagger-jsdoc';
+import { config } from './index';
 
 const options: swaggerJsdoc.Options = {
   definition: {
@@ -24,8 +25,10 @@ links them together through primary and secondary contact relationships.
     },
     servers: [
       {
-        url: 'http://localhost:3000',
-        description: 'Local development server',
+        url: config.externalUrl,
+        description: config.externalUrl.includes('localhost')
+          ? 'Local development server'
+          : 'Production server',
       },
     ],
     tags: [
