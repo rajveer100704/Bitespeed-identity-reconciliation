@@ -1,4 +1,5 @@
 import { prisma } from '../config/prisma';
+import { Contact } from '../types/contact.types';
 import { NotFoundError } from '../utils';
 import logger from '../utils/logger';
 import { ContactGraphResponse, GraphNode, GraphEdge } from '../types/graph.types';
@@ -32,7 +33,7 @@ export async function getContactGraph(contactId: number): Promise<ContactGraphRe
   logger.info(`Contact graph fetched for id=${contactId}, cluster size=${cluster.length}`);
 
   // --- 4. Build nodes ---
-  const nodes: GraphNode[] = cluster.map((c) => ({
+  const nodes: GraphNode[] = cluster.map((c: Contact) => ({
     id: c.id,
     email: c.email,
     phoneNumber: c.phoneNumber,
@@ -41,8 +42,8 @@ export async function getContactGraph(contactId: number): Promise<ContactGraphRe
 
   // --- 5. Build edges (secondary → primary) ---
   const edges: GraphEdge[] = cluster
-    .filter((c) => c.linkPrecedence === 'SECONDARY' && c.linkedId !== null)
-    .map((c) => ({
+    .filter((c: Contact) => c.linkPrecedence === 'SECONDARY' && c.linkedId !== null)
+    .map((c: Contact) => ({
       source: c.id,
       target: c.linkedId!,
     }));

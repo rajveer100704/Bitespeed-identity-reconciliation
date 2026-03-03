@@ -1,3 +1,4 @@
+import { Prisma } from '@prisma/client';
 import { prisma } from '../config/prisma';
 import { Contact, IdentifyResponse } from '../types/contact.types';
 import { BadRequestError } from '../utils';
@@ -20,7 +21,7 @@ export async function identifyContact(
   }
 
   // --- 2. Run all logic inside a transaction for consistency ---
-  return prisma.$transaction(async (tx) => {
+  return prisma.$transaction(async (tx: Prisma.TransactionClient) => {
     // --- 3. Find all contacts matching email OR phoneNumber ---
     const matchingContacts = await findMatchingContacts(tx, cleanEmail, cleanPhone);
 
@@ -123,8 +124,8 @@ async function resolveCluster(
   cluster: Contact[],
 ): Promise<{ primary: Contact; secondaries: Contact[] }> {
   // Separate primaries and secondaries
-  const primaries = cluster.filter((c) => c.linkPrecedence === 'PRIMARY');
-  const secondaries = cluster.filter((c) => c.linkPrecedence === 'SECONDARY');
+  const primaries = cluster.filter((c: Contact) => c.linkPrecedence === 'PRIMARY');
+  const secondaries = cluster.filter((c: Contact) => c.linkPrecedence === 'SECONDARY');
 
   // The oldest primary (first by createdAt, already sorted)
   const primary = primaries[0];
@@ -165,8 +166,8 @@ async function resolveCluster(
     });
 
     return {
-      primary: updatedCluster.find((c) => c.id === primary.id)!,
-      secondaries: updatedCluster.filter((c) => c.id !== primary.id),
+      primary: updatedCluster.find((c: Contact) => c.id === primary.id)!,
+      secondaries: updatedCluster.filter((c: Contact) => c.id !== primary.id),
     };
   }
 
@@ -186,8 +187,8 @@ async function createSecondaryIfNeeded(
 ): Promise<Contact[]> {
   const allContacts = [primary, ...secondaries];
 
-  const existingEmails = new Set(allContacts.map((c) => c.email).filter(Boolean));
-  const existingPhones = new Set(allContacts.map((c) => c.phoneNumber).filter(Boolean));
+  const existingEmails = new Set(allContacts.map((c: Contact) => c.email).filter(Boolean));
+  const existingPhones = new Set(allContacts.map((c: Contact) => c.phoneNumber).filter(Boolean));
 
   const hasNewEmail = email && !existingEmails.has(email);
   const hasNewPhone = phoneNumber && !existingPhones.has(phoneNumber);
@@ -243,7 +244,7 @@ function buildResponse(primary: Contact, secondaries: Contact[]): IdentifyRespon
       primaryContactId: primary.id,
       emails,
       phoneNumbers,
-      secondaryContactIds: secondaries.map((c) => c.id).sort((a, b) => a - b),
+      secondaryContactIds: secondaries.map((c: Contact) => c.id).sort((a, b) => a - b),
     },
   };
 }
